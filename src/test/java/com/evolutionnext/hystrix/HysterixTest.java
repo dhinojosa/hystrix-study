@@ -1,7 +1,7 @@
 package com.evolutionnext.hystrix;
 
-import rx.Observable;
 import org.junit.Test;
+import rx.Observable;
 
 import java.util.concurrent.Future;
 
@@ -10,13 +10,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class HysterixTest {
 
 
-    /**
-     * execute() runs a command synchronously
-     *
-     * @throws Exception
-     */
     @Test
-    public void testCommandExecute() throws Exception {
+    public void testCommandExecute() {
         String result = new HelloWorldCommand("World").execute();
         assertThat(result).isEqualTo("Hello World!");
     }
@@ -28,10 +23,6 @@ public class HysterixTest {
         assertThat(result).isEqualTo("Hello World!");
     }
 
-    /**
-     * Runs it hot!
-     * @throws Exception
-     */
     @Test
     public void testCommandToHotObservable() throws Exception {
         Observable<String> observable = new HelloWorldCommand("World").observe();
@@ -73,11 +64,6 @@ public class HysterixTest {
         assertThat(new HelloWorldCommandFailure("Bob").execute()).isEqualTo("Hello Failure Bob!");
     }
 
-    /**
-     * The thing about Observable command failures is that they
-     * will post items before the error since it is streaming
-     * It uses Internally, the RxJava onErrorResumeNext
-     */
     @Test
     public void testObservableCommandFailureAsHotObservable() throws InterruptedException {
         Observable<String> observable = new HelloWorldObservableCommandFailure("World").observe();

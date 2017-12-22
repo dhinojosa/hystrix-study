@@ -26,19 +26,16 @@ public class HelloWorldObservableCommand extends HystrixObservableCommand<String
     @SuppressWarnings("Duplicates")
     protected Observable<String> construct() {
         System.out.println("Running Hello World Observable Command!");
-        return Observable.create(new Observable.OnSubscribe<String>() {
-            @Override
-            public void call(Subscriber<? super String> observer) {
-                try {
-                    if (!observer.isUnsubscribed()) {
-                        // a real example would do work like a network call here
-                        observer.onNext("Hello");
-                        observer.onNext(name + "!");
-                        observer.onCompleted();
-                    }
-                } catch (Exception e) {
-                    observer.onError(e);
+        return Observable.<String>create( observer -> {
+            try {
+                if (!observer.isUnsubscribed()) {
+                    // a real example would do work like a network call here
+                    observer.onNext("Hello");
+                    observer.onNext(name + "!");
+                    observer.onCompleted();
                 }
+            } catch (Exception e) {
+                observer.onError(e);
             }
         }).subscribeOn(Schedulers.io());
     }
